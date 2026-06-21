@@ -1,0 +1,10 @@
+{
+  "name": "crow-observability",
+  "version": "1.0.0",
+  "description": "CrowObservability dashboard: shadow AI detection, AI registry, policy enforcement, secure gateway, and code review, as a static dashboard you can run locally.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}

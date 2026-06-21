@@ -1,0 +1,158 @@
+/* CrowObservability sample data.
+   Replace these arrays with results from your own API/scan to go live. */
+
+const OVERVIEW_ISSUES = [
+  {
+    sev: "critical", cat: "Shadow AI Detection", badge: "critical",
+    title: "Unregistered MCP server connected from build agent",
+    detail: "A coding agent on the release pipeline opened a connection to an MCP server not present in the registry. No version or provenance on file.",
+    fix: "Block the connection at the gateway and require the asset to be registered with a verified source before reconnecting."
+  },
+  {
+    sev: "critical", cat: "Shadow AI Detection", badge: "critical",
+    title: "External model endpoint called outside approved list",
+    detail: "An agent skill routed a request directly to a third-party model API, bypassing the secure gateway entirely.",
+    fix: "Revoke the skill's outbound network access and re-route all model calls through the gateway."
+  },
+  {
+    sev: "warning", cat: "Policy Enforcement", badge: "warning",
+    title: "Agent skill missing compliance label",
+    detail: "A plugin shipped in last week's release has no compliance classification, so policy checks can't evaluate it.",
+    fix: "Tag the skill with a compliance label in the registry; policy engine will re-evaluate on next sync."
+  },
+  {
+    sev: "warning", cat: "Centralized AI Registry", badge: "warning",
+    title: "Asset traced to release without a clear source",
+    detail: "A plugin in production can't be traced back to a specific commit or release tag in the registry.",
+    fix: "Backfill provenance metadata from the build log, or quarantine the asset until source is confirmed."
+  },
+  {
+    sev: "resolved", cat: "Secure AI Gateway", badge: "resolved",
+    title: "Cursor connection routed through gateway",
+    detail: "Cursor's MCP connection was previously direct; it's now routed through the secure gateway with full usage logging.",
+    fix: "No action needed. Monitoring performance and usage patterns continuously."
+  }
+];
+
+const CONNECTIONS = [
+  { name: "Gmail", scope: "Email", risk: "low" },
+  { name: "Google Calendar", scope: "Scheduling", risk: "low" },
+  { name: "Google Drive", scope: "File storage", risk: "medium" },
+  { name: "Zoom for Claude", scope: "Meetings", risk: "medium" },
+  { name: "Zapier", scope: "Workflow automation", risk: "high" },
+  { name: "Supabase", scope: "Database / infra", risk: "high" },
+  { name: "Bitly", scope: "Link management", risk: "low" },
+  { name: "PubMed", scope: "Research data", risk: "low" },
+  { name: "Microsoft Learn", scope: "Documentation", risk: "low" },
+  { name: "Indeed", scope: "Job search", risk: "low" },
+  { name: "Dice", scope: "Job search", risk: "low" },
+  { name: "ZipRecruiter", scope: "Job search", risk: "low" },
+  { name: "Dovetail", scope: "Research repository", risk: "medium" },
+  { name: "GovTribe", scope: "Government data", risk: "medium" },
+  { name: "Postman", scope: "API tooling", risk: "medium" }
+];
+
+/* Code review findings, grouped by category so "all aspects of code review"
+   are represented: security, quality, dependencies, AI provenance,
+   testing, performance, style, and PR/process governance. */
+const CODE_REVIEW = [
+  {
+    sev: "critical", cat: "Security", file: "src/auth/session.ts:84",
+    title: "Hard-coded API key committed to the repository",
+    detail: "A live-looking secret is checked into source rather than read from environment config or a secrets manager.",
+    fix: "Rotate the key immediately, move it to environment variables or a vault, and add a secret-scanning pre-commit hook."
+  },
+  {
+    sev: "critical", cat: "Security", file: "src/api/query.ts:142",
+    title: "User input concatenated directly into a SQL query",
+    detail: "The search endpoint builds a query string from request parameters without parameterization, which is exploitable for SQL injection.",
+    fix: "Switch to parameterized queries or the ORM's query builder, and add an injection test case for this endpoint."
+  },
+  {
+    sev: "warning", cat: "Dependencies", file: "package.json",
+    title: "Three dependencies have known CVEs at current pinned versions",
+    detail: "Two of the three have patched releases available; the third requires a minor version bump with no breaking changes.",
+    fix: "Run the dependency update, re-run the test suite, and pin to the patched versions in the lockfile."
+  },
+  {
+    sev: "warning", cat: "Dependencies", file: "LICENSE-check",
+    title: "New dependency uses a copyleft license",
+    detail: "A library added this sprint is GPL-licensed, which may conflict with the project's distribution terms.",
+    fix: "Confirm license compatibility with legal, or swap to an MIT/Apache-licensed alternative before merging."
+  },
+  {
+    sev: "warning", cat: "AI provenance", file: "src/agents/triage-skill.py",
+    title: "AI-generated module has no human reviewer sign-off",
+    detail: "Commit metadata indicates this file was generated by an agent and merged without a human approval on the PR.",
+    fix: "Require at least one human reviewer for any commit flagged as agent-generated, enforced via branch protection."
+  },
+  {
+    sev: "warning", cat: "Code quality", file: "src/services/orderProcessor.ts",
+    title: "Function exceeds complexity threshold",
+    detail: "processOrder() has a cyclomatic complexity of 27 against a project ceiling of 10, making it hard to test and reason about.",
+    fix: "Extract the validation, pricing, and fulfillment branches into separate, independently testable functions."
+  },
+  {
+    sev: "warning", cat: "Code quality", file: "src/utils/", 
+    title: "Duplicated logic across four utility files",
+    detail: "Date-formatting logic is reimplemented with small variations in four separate files instead of a shared utility.",
+    fix: "Consolidate into a single dateUtils module and update call sites; flagged by the duplication linter at 38 repeated lines."
+  },
+  {
+    sev: "warning", cat: "Test coverage", file: "src/billing/",
+    title: "Billing module coverage is below the required threshold",
+    detail: "Statement coverage sits at 54% against a project-wide policy of 80%, with refund logic entirely untested.",
+    fix: "Add unit tests for refund and proration paths before this module ships to production."
+  },
+  {
+    sev: "warning", cat: "Performance", file: "src/api/reports.ts:61",
+    title: "N+1 query pattern in the reports endpoint",
+    detail: "The endpoint issues one database query per row in a loop instead of a single batched query, which will degrade under load.",
+    fix: "Replace the loop with a single batched query or a join, and add a load test to catch regressions."
+  },
+  {
+    sev: "warning", cat: "Style", file: ".eslintrc / repo-wide",
+    title: "142 lint warnings across the changed files",
+    detail: "Mostly inconsistent import ordering and unused variables; none are blocking but they add review noise.",
+    fix: "Run the formatter and linter with --fix, and enable lint-on-save so future PRs arrive clean."
+  },
+  {
+    sev: "resolved", cat: "Process", file: "branch protection",
+    title: "Required reviewers and status checks now enforced on main",
+    detail: "main previously allowed direct pushes; it now requires one approving review and a passing CI run before merge.",
+    fix: "No action needed. Settings apply to both the GitHub and GitLab mirrors of this repository."
+  },
+  {
+    sev: "resolved", cat: "Security", file: "CI pipeline",
+    title: "Secret scanning enabled in CI",
+    detail: "A scanning step now runs on every pull request and blocks merges if a credential pattern is detected.",
+    fix: "No action needed. Review scan logs periodically for false positives to keep the rule set tuned."
+  },
+{
+    sev: "resolved", cat: "Security", file: "CI pipeline",
+    title: "Secret scanning enabled in CI",
+    detail: "A scanning step now runs on every pull request and blocks merges if a credential pattern is detected.",
+    fix: "No action needed. Review scan logs periodically for false positives to keep the rule set tuned."
+  }, // <-- Add this comma to separate your items
+  {
+    sev: "critical", cat: "Compliance & Testing", file: "config/compliance.json",
+    title: "SOC 2 Type II Compliance Violation: Unencrypted LLM Logging",
+    detail: "Production inference logs are recording raw user prompts containing PII without masking or cryptographic encryption at rest, violating confidentiality criteria.",
+    fix: "Implement a PII-redaction middleware before logs are written to the persistence layer, and rotate the exposed log storage keys."
+  },
+  {
+    sev: "resolved", cat: "Compliance & Testing", file: "tests/unit/mcp_auth.test.ts",
+    title: "Static Application Security Testing (SAST): Cryptographic verification added",
+    detail: "Unit test coverage successfully expanded to validate strict signature tokens on all incoming Model Context Protocol (MCP) server handshake events.",
+    fix: "No action needed. Automated CI workflow verified successful test validation across all 24 mock handshakes."
+  }
+]; // <-- This closes the code review array safely
+
+const REGISTRY = [
+  { name: "claude-sonnet-4-6", type: "Model", version: "4.6", source: "Anthropic API · release 2026.06.1", status: "Approved" },
+  { name: "triage-skill", type: "Agent skill", version: "1.3.0", source: "internal/agents · release 2026.06.1", status: "Pending review" },
+  { name: "Zapier MCP", type: "MCP server", version: "n/a", source: "mcp.zapier.com", status: "Approved" },
+  { name: "Supabase MCP", type: "MCP server", version: "n/a", source: "mcp.supabase.com", status: "Approved" },
+  { name: "order-processor-plugin", type: "Plugin", version: "0.9.2", source: "unknown", status: "Quarantined" },
+  { name: "Zoom for Claude", type: "MCP server", version: "n/a", source: "mcp.zoom.us", status: "Approved" }
+];

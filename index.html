@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrowObservability</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">CO</span>
+      <span class="brand-name">CrowObservability</span>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-view="overview">Overview</button>
+      <button class="nav-item" data-view="connections">Connections</button>
+      <button class="nav-item" data-view="codereview">Code review</button>
+      <button class="nav-item" data-view="registry">Registry</button>
+      <button class="nav-item" data-view="instructions">Setup & Documentation</button>
+    </nav>
+    <div class="sidebar-foot">
+      <span class="dot dot-live"></span> Running on localhost
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <section id="view-overview" class="view active">
+      <header class="view-head">
+        <h1>Overview</h1>
+        <p>Issues across your agentic software supply chain, with the fix for each.</p>
+      </header>
+
+      <div class="stat-grid" id="stat-grid"></div>
+
+      <div class="filter-row" id="overview-filters">
+        <button class="chip active" data-f="all">All issues</button>
+        <button class="chip" data-f="critical">Critical</button>
+        <button class="chip" data-f="warning">Warning</button>
+        <button class="chip" data-f="resolved">Resolved</button>
+      </div>
+
+      <div id="overview-list" class="card-list"></div>
+    </section>
+
+    <section id="view-connections" class="view">
+      <header class="view-head">
+        <h1>Connections</h1>
+        <p>Every MCP server and external service currently wired into this Claude environment.</p>
+      </header>
+      <div id="conn-grid" class="conn-grid"></div>
+    </section>
+
+    <section id="view-codereview" class="view">
+      <header class="view-head">
+        <h1>Code review</h1>
+        <p>Findings from the last scan, grouped by review category. Connect a repo to replace this with live results.</p>
+      </header>
+
+      <div class="cr-toolbar">
+        <select id="cr-repo">
+          <option>acme/agent-orchestrator (GitHub, main)</option>
+          <option>acme/mcp-skills (GitLab, main)</option>
+        </select>
+        <button class="btn" id="cr-rescan"><span class="icon">&#8635;</span> Re-run scan</button>
+      </div>
+
+      <div class="cr-summary" id="cr-summary"></div>
+
+      <div class="filter-row" id="cr-filters"></div>
+
+      <div id="cr-list" class="card-list"></div>
+    </section>
+
+    <section id="view-registry" class="view">
+      <header class="view-head">
+        <h1>Registry</h1>
+        <p>Models, MCP servers, skills, and plugins tracked as native artifacts.</p>
+      </header>
+      <table class="table" id="registry-table">
+        <thead>
+          <tr><th>Asset</th><th>Type</th><th>Version</th><th>Source / release</th><th>Status</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="view-instructions" class="view">
+      <header class="view-head">
+        <h1>Platform Manual</h1>
+        <p>Local Configuration & Multi-Agent Telemetry Integration Pipeline.</p>
+      </header>
+
+      <div class="card-list" style="max-width: 900px; margin: 0 auto; padding: 20px; background-color: var(--card-bg, #1e1e2e); border-radius: 8px; border: 1px solid #333;">
+        <div style="margin-bottom: 25px;">
+          <h2 style="color: #4db6ac; margin-bottom: 8px; font-size: 1.4rem;">01. Core Capabilities</h2>
+          <p style="color: #b0bec5; line-height: 1.6;">CrowObservability provides centralized, sovereign log ingestion and compliance verification for local software pipelines, continuous integration nodes, and autonomous AI agents (LangGraph, CrewAI, Autogen). It intercepts security anomalies, monitors local Model Context Protocol (MCP) networks, and flags code defects before artifacts reach registries.</p>
+        </div>
+
+        <div style="margin-bottom: 25px; padding: 15px; background: #111; border-radius: 6px; border-left: 4px solid #4db6ac;">
+          <h2 style="color: #fff; margin-bottom: 8px; font-size: 1.2rem;">02. Local Vault Setup (.env)</h2>
+          <p style="color: #b0bec5; margin-bottom: 10px; font-size: 0.95rem;">To secure the data collection layer, configure a text file named <code style="background: #222; color: #ff8a65; padding: 2px 6px; border-radius: 4px;">.env</code> inside your root app folder:</p>
+          <pre style="background: #000; color: #81c784; padding: 12px; border-radius: 4px; font-family: monospace; font-size: 0.9rem; overflow-x: auto; margin: 0;">PORT=3000
+CROW_API_KEY=your_secure_custom_token_here</pre>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+          <h2 style="color: #4db6ac; margin-bottom: 12px; font-size: 1.4rem;">03. Compliance & Policy Mappings</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+            <div style="padding: 15px; background: #252538; border-radius: 6px; border: 1px solid #444;">
+              <strong style="color: #ff5252; display: block; margin-bottom: 5px;">🛡️ SOC 2 Type II Auditing</strong>
+              <span style="color: #b0bec5; font-size: 0.9rem;">Flags plaintext PII transfers, unmasked AI prompt dumps, and missing data-encryption guardrails.</span>
+            </div>
+            <div style="padding: 15px; background: #252538; border-radius: 6px; border: 1px solid #444;">
+              <strong style="color: #ff5252; display: block; margin-bottom: 5px;">📦 Supply Chain Sec</strong>
+              <span style="color: #b0bec5; font-size: 0.9rem;">Tracks dependencies, untrusted external runtime tools, and non-verified third-party scripts.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 style="color: #4db6ac; margin-bottom: 8px; font-size: 1.4rem;">04. Connecting AI Pipelines & Tools</h2>
+          <p style="color: #b0bec5; line-height: 1.6; margin-bottom: 12px;">Configure pipelines to send a standard JSON metadata array via an HTTP POST request authenticated by a Bearer Token:</p>
+          <p style="margin: 5px 0; color: #eee;"><strong style="color: #81c784;">Target Endpoint:</strong> <code style="font-family: monospace; background: #111; padding: 2px 6px;">POST http://localhost:3000/api/report-compliance</code></p>
+          <p style="margin: 5px 0; color: #eee;"><strong style="color: #81c784;">Required Header:</strong> <code style="font-family: monospace; background: #111; padding: 2px 6px;">Authorization: Bearer [your_secure_custom_token_here]</code></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

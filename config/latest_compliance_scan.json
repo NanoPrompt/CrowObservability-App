@@ -1,0 +1,8 @@
+{
+  "sev": "critical",
+  "fix": "Implement a PII-redaction filter loop inside the pipeline controller.",
+  "file": "src/gateway/security.py",
+  "cat": "Compliance & Testing",
+  "title": "SOC 2 Critical Violation: Raw LLM Prompt Logging",
+  "detail": "Production telemetry is logging unmasked customer strings containing PII elements."
+}
